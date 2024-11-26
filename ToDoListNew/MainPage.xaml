@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ToDoListNew.MainPage"
+             xmlns:local="clr-namespace:ToDoListNew"
+             x:DataType="local:MainViewModel">
+
+    <ContentPage.BindingContext>
+        <local:MainViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Верхняя часть с ListView для отображения задач -->
+        <ListView Grid.Row="0" Grid.ColumnSpan="2" 
+                  ItemsSource="{Binding Tasks}" 
+                  VerticalOptions="FillAndExpand">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:TaskItem">
+                    <ViewCell>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" IsChecked="{Binding IsCompletedCheck, Mode=TwoWay}"/>
+                            <Label Grid.Column="1" TextColor="white" Text="{Binding Description}" FontSize="20" VerticalTextAlignment="Center"/>
+                            <Button Grid.Column="2" Text="Delete" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:MainViewModel}}, Path=DeleteTaskCommand}" 
+                                    CommandParameter="{Binding .}" 
+                                    BackgroundColor="#CF3131" 
+                                    TextColor="White" Margin="10"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Нижняя часть с полем для ввода и кнопкой -->
+        <Entry Grid.Row="1" Grid.Column="0" 
+               Placeholder="Input text for new task..." 
+               Text="{Binding NewTaskText}" 
+               VerticalOptions="Center" />
+        <Button Grid.Row="1" Grid.Column="1" 
+                WidthRequest="140" 
+                BackgroundColor="Purple" 
+                TextColor="#190B3A" 
+                Text="Create" 
+                Command="{Binding AddTaskCommand}" 
+                VerticalOptions="Center" />
+    </Grid>
+
+</ContentPage>
